@@ -24,14 +24,13 @@ export default {
   				foreground: 'hsl(var(--popover-foreground))'
   			},
   			primary: {
+  				'200': 'rgba(8, 101, 67, 1)',
+  				'300': 'rgba(7, 90, 59, 1)',
+  				'400': 'rgba(7, 84, 56, 1)',
+  				'500': 'rgba(5, 67, 44, 1)',
+  				'600': 'rgba(4, 50, 33, 1)',
   				DEFAULT: 'rgba(9, 112, 74, 1)',
-  				foreground: 'hsl(var(--primary-foreground))',
-				  '200': 'rgba(8, 101, 67, 1)',
-				  '300': 'rgba(7, 90, 59, 1)',
-				  '400': 'rgba(7, 84, 56, 1)',
-				  '500': 'rgba(5, 67, 44, 1)',
-				  '600': 'rgba(4, 50, 33, 1)',
-
+  				foreground: 'hsl(var(--primary-foreground))'
   			},
   			secondary: {
   				DEFAULT: 'hsl(var(--secondary))',
@@ -59,6 +58,28 @@ export default {
   				'4': 'hsl(var(--chart-4))',
   				'5': 'hsl(var(--chart-5))'
   			}
+  		},
+  		keyframes: {
+  			'accordion-down': {
+  				from: {
+  					height: '0'
+  				},
+  				to: {
+  					height: 'var(--radix-accordion-content-height)'
+  				}
+  			},
+  			'accordion-up': {
+  				from: {
+  					height: 'var(--radix-accordion-content-height)'
+  				},
+  				to: {
+  					height: '0'
+  				}
+  			}
+  		},
+  		animation: {
+  			'accordion-down': 'accordion-down 0.2s ease-out',
+  			'accordion-up': 'accordion-up 0.2s ease-out'
   		}
   	}
   },
