@@ -4,7 +4,7 @@ import { ChevronRight } from "lucide-react";
 export function AboutUs() {
   return (
     <section className="py-12 md:py-24 lg:py-32 bg-background">
-      <div className="container px-4 md:px-12">
+      <div className=" px-4 md:px-12">
         <div className="flex flex-col items-start space-y-4">
           <div className="space-y-2">
             <p className="uppercase text-primary font-semibold">About Us</p>

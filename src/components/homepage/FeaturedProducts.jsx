@@ -6,7 +6,7 @@ const products = [
   {
     title: 'Product 1',
     description: "This is a description for product 1. It's amazing and you should definitely check it out.",
-    image: 'https://via.placeholder.com/300x200',
+    image: "/src/assets/images/RikeMarketplace.png",
     time: '10 mins',
   },
   {
@@ -32,7 +32,7 @@ const products = [
 export function ProductSection() {
   return (
     <section className="py-12 md:py-24 lg:py-32 bg-background">
-      <div className="container px-4 md:px-12">
+      <div className="px-4 md:px-12">
         <div className="flex flex-col items-center space-y-4 text-center">
         <p className="uppercase text-primary font-semibold">Products</p>
           <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Our Products</h2>

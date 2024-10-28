@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button'
 export function Banner() {
   return (
     <section className="py-12 md:py-24 lg:py-32 bg-white">
-      <div className="container px-4 md:px-12">
+      <div className=" px-4 md:px-12">
         <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 items-center">
           <div className="space-y-4">
             <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Join Our Community</h2>

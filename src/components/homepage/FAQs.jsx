@@ -28,7 +28,7 @@ export function FAQs() {
 
   return (
     <section className="py-12 md:py-24 lg:py-32 bg-gray-100">
-      <div className="container px-4 md:px-6">
+      <div className=" px-4 md:px-6">
         <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl text-center mb-8">Frequently Asked Questions</h2>
         <Accordion type="single" collapsible className="w-full max-w-3xl mx-auto">
           {faqs.map((faq, index) => (

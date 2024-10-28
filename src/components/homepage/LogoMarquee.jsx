@@ -1,11 +1,11 @@
 export function LogoMarquee() {
   const logos = [
-    { src: '/assets/images/research-connect-logo.png', alt: 'Company 1' },
-    { src: '/assets/images/research-connect-logo.png', alt: 'Company 2' },
-    { src: '/assets/images/research-connect-logo.png', alt: 'Company 3' },
-    { src: '/assets/images/research-connect-logo.png', alt: 'Company 4' },
-    { src: '/assets/images/research-connect-logo.png', alt: 'Company 5' },
-    { src: '/assets/images/research-connect-logo.png', alt: 'Company 6' },
+    { src: '/src/assets/images/logo1.png', alt: 'Logo 1' },
+    { src: '/src/assets/images/logo2.png', alt: 'Logo 2' },
+    { src: '/src/assets/images/logo3.png', alt: 'Logo 3' },
+    { src: '/src/assets/images/logo4.png', alt: 'Logo 4' },
+    { src: '/src/assets/images/logo5.png', alt: 'Logo 5' },
+    { src: '/src/assets/images/logo6.png', alt: 'Logo 6' },
   ]
 
   return (
@@ -16,7 +16,7 @@ export function LogoMarquee() {
         <div className="flex animate-marquee">
           {logos.concat(logos).map((logo, index) => (
             <div key={index} className="flex-shrink-0 mx-8">
-              <img src={logo.src} alt={logo.alt} className="w-[180px] h-[80px]" />
+              <img src={logo.src} alt={logo.alt} className="w-[120px]" />
             </div>
           ))}
         </div>

@@ -1,4 +1,3 @@
-import { AboutUs } from "@/components/homepage/About"
 import { Hero } from "@/components/homepage/Hero"
 import { LogoMarquee } from "@/components/homepage/LogoMarquee"
 import { ProductSection } from "@/components/homepage/FeaturedProducts"
@@ -11,7 +10,6 @@ const HomePage = () => {
     <div>
       <Hero />
       <LogoMarquee /> 
-      <AboutUs />
       <ProductSection />
       <PublishSection />
       <Banner />
