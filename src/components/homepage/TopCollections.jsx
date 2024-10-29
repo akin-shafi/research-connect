@@ -53,7 +53,7 @@ export default function TopCollections() {
       funded: 2005,
     },
     {
-      image: "https://via.placeholder.com/300x150",
+      image: "https://via.placeholder.com/300x200",
       title: "RAir X1 PRO|PRO MAX",
       description:
         "Capture breathtaking aerial footage with the RAir X1 PRO|PRO MAX. This advanced drone offers unparalleled stability and image quality for professional results.",
@@ -61,7 +61,7 @@ export default function TopCollections() {
       dark: true,
     },
     {
-      image: "https://via.placeholder.com/300x150",
+      image: "https://via.placeholder.com/300x200",
       title: "AF 28mm F4.5 FE",
       description:
         "Elevate your photography with the AF 28mm F4.5 FE lens. This compact wide-angle lens delivers sharp, distortion-free images in various lighting conditions.",
@@ -69,14 +69,14 @@ export default function TopCollections() {
       dark: true,
     },
     {
-      image: "https://via.placeholder.com/300x150",
+      image: "https://via.placeholder.com/300x200",
       title: "HUAWEI MateBook X Pro",
       description:
         "Experience premium performance and sleek design with the HUAWEI MateBook X Pro. This ultrabook combines power and portability for the modern professional.",
       badge: "GOGOPICK",
     },
     {
-      image: "https://via.placeholder.com/300x150",
+      image: "https://via.placeholder.com/300x200",
       title: "CALM+",
       description:
         "Achieve balance and tranquility in your daily life with CALM+. This innovative wellness device helps you manage stress and improve overall well-being.",
