@@ -34,12 +34,15 @@ function ProductCard({ title, price, raised, funded, category, status, image }) 
             >
               VIEW CAMPAIGN
             </Button>
+            <Button size="icon" variant="secondary" className={`absolute top-2 right-2 transition-opacity duration-300 ${
+                isHovering ? 'opacity-100' : 'opacity-0'
+              }`}>
+          <Bookmark className="h-4 w-4"  />
+        </Button>
           </div>
         </div>
         <Badge className="absolute top-2 left-2 bg-background text-foreground">{status}</Badge>
-        <Button size="icon" variant="ghost" className="absolute top-2 right-2">
-          <Bookmark className="h-4 w-4" />
-        </Button>
+        
       </CardHeader>
       <CardContent className="p-4">
         <h2 className="text-lg font-semibold mb-2">{title}</h2>

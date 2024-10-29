@@ -1,132 +1,209 @@
-import { Card, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
+"use client";
 
-const campaigns = [
-  {
-    image: "/placeholder.svg?height=200&width=400",
-    title: "LIVALL PikaBoost 2: Electrify Your Rides with Ease",
-    price: 379,
-    originalPrice: 399,
-    discount: "5% OFF",
-    raised: "1,103,156",
-    funded: "21687%",
-    badge: "GOGOPICK"
-  },
-  {
-    image: "/placeholder.svg?height=200&width=400",
-    title: "Mirror Villas",
-    price: 1049,
-    originalPrice: 1399,
-    discount: "25% OFF",
-    raised: "497,513",
-    funded: "1990%"
-  },
-  {
-    image: "/placeholder.svg?height=200&width=400",
-    title: "BYEEE Multiverse Collection",
-    price: 300,
-    raised: "761,124",
-    funded: "1341%"
-  },
-  {
-    image: "/placeholder.svg?height=200&width=400",
-    title: "HOVERAir - World's First 8K Flying Action Camera",
-    price: 499,
-    originalPrice: 500,
-    discount: "0% OFF",
-    raised: "4,735,741",
-    funded: "8891%",
-    badge: "GOGOPICK",
-    extraBadges: ["SHIPPING SOON"],
-    button: "VIEW CAMPAIGN"
-  },
-  {
-    image: "/placeholder.svg?height=200&width=400",
-    title: "Viltrox AF 28mm F4.5 FE Chips-Size Ultra-Thin Lens",
-    raised: "348,230",
-    funded: "10999%",
-    badge: "VILTROX | INDIEGOGO"
-  },
-  {
-    image: "/placeholder.svg?height=200&width=400",
-    title: "GPD DUO 13.3-inch Dual-OLED Screen Laptop",
-    price: 1866,
-    originalPrice: 1978,
-    discount: "5% OFF",
-    raised: "2,260,723",
-    funded: "11304%",
-    badge: "GOGOPICK"
-  },
-  {
-    image: "/placeholder.svg?height=200&width=400",
-    title: "Kineon: HEAL Your Gut, CALM Your Mind",
-    price: 599,
-    originalPrice: 998,
-    discount: "39% OFF",
-    raised: "595,724",
-    funded: "5798%",
-    badge: "GOGOPICK",
-    extraText: "FULLY FUNDED IN 30 MINUTES"
-  }
-]
+import { Search, Star, Ghost, Gamepad2, Palette } from "lucide-react";
+import { useState } from "react";
+import { Button } from "../ui/button";
 
 export default function TopCollections() {
+  const [activeCategory, setActiveCategory] = useState("TEAM FAVORITES");
+
+  const categories = [
+    { icon: Search, text: "10 COOL & CLEVER FINDS" },
+    { icon: Star, text: "TEAM FAVORITES" },
+    { icon: Ghost, text: "SPOOKY PICKS" },
+    { icon: Gamepad2, text: "FUN & GAMES" },
+    { icon: Palette, text: "CREATIVE SPOTLIGHT" },
+  ];
+
+  const products = [
+    {
+      image: "https://via.placeholder.com/600x300",
+      title: 'Odin2 Portal: The Ultimate 7" OLED Gaming Handheld',
+      description:
+        'Experience gaming like never before with the Odin2 Portal. This powerful handheld features a stunning 7" OLED display for immersive gameplay on the go.',
+      price: 334,
+      originalPrice: 360,
+      discount: 7,
+      raised: 4290470,
+      funded: 8581,
+      large: true,
+    },
+    {
+      image: "https://via.placeholder.com/400x200",
+      title: "LIVALL PikaBoost 2: Electrify Your Rides with Ease",
+      description:
+        "Transform any bicycle into an e-bike with the LIVALL PikaBoost 2. This innovative device offers effortless electrification for a smoother, faster ride.",
+      price: 379,
+      originalPrice: 399,
+      discount: 5,
+      raised: 1105914,
+      funded: 21648,
+      badge: "GOGOPICK",
+      trustBadge: true,
+    },
+    {
+      image: "https://via.placeholder.com/400x200",
+      title: "Mirror Villas",
+      description:
+        "Experience luxury and nature in perfect harmony with Mirror Villas. These stunning accommodations blend seamlessly into their surroundings, offering a unique stay.",
+      price: 1049,
+      originalPrice: 1399,
+      discount: 25,
+      raised: 501299,
+      funded: 2005,
+    },
+    {
+      image: "https://via.placeholder.com/300x150",
+      title: "RAir X1 PRO|PRO MAX",
+      description:
+        "Capture breathtaking aerial footage with the RAir X1 PRO|PRO MAX. This advanced drone offers unparalleled stability and image quality for professional results.",
+      badge: "GOGOPICK",
+      dark: true,
+    },
+    {
+      image: "https://via.placeholder.com/300x150",
+      title: "AF 28mm F4.5 FE",
+      description:
+        "Elevate your photography with the AF 28mm F4.5 FE lens. This compact wide-angle lens delivers sharp, distortion-free images in various lighting conditions.",
+      badge: "VILTROX",
+      dark: true,
+    },
+    {
+      image: "https://via.placeholder.com/300x150",
+      title: "HUAWEI MateBook X Pro",
+      description:
+        "Experience premium performance and sleek design with the HUAWEI MateBook X Pro. This ultrabook combines power and portability for the modern professional.",
+      badge: "GOGOPICK",
+    },
+    {
+      image: "https://via.placeholder.com/300x150",
+      title: "CALM+",
+      description:
+        "Achieve balance and tranquility in your daily life with CALM+. This innovative wellness device helps you manage stress and improve overall well-being.",
+      badge: "GOGOPICK",
+    },
+  ];
+
   return (
-    <div className="container mx-auto p-4">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {campaigns.map((campaign, index) => (
-          <Card key={index} className="overflow-hidden">
-            <div className="relative">
-              <img
-                src={campaign.image}
-                alt={campaign.title}
-                width={400}
-                height={200}
-                className="w-full h-48 object-cover"
-              />
-              {campaign.badge && (
-                <Badge className="absolute top-2 left-2 bg-white text-black">
-                  {campaign.badge}
-                </Badge>
-              )}
-              {campaign.extraBadges && campaign.extraBadges.map((badge, i) => (
-                <Badge key={i} className="absolute top-2 right-2 bg-white text-black">
-                  {badge}
-                </Badge>
-              ))}
-            </div>
-            <CardContent className="p-4">
-              <h3 className="font-bold text-lg mb-2">{campaign.title}</h3>
-              <div className="flex justify-between items-center mb-2">
-                <div>
-                  <span className="text-2xl font-bold">${campaign.price}</span>
-                  {campaign.originalPrice && (
-                    <span className="text-sm line-through ml-2">${campaign.originalPrice}</span>
-                  )}
-                </div>
-                {campaign.discount && (
-                  <Badge className="bg-green-500">{campaign.discount}</Badge>
-                )}
-              </div>
-              <div className="text-sm text-gray-600">
-                <span>${campaign.raised} raised</span>
-                <span className="mx-2">|</span>
-                <span>{campaign.funded} funded</span>
-              </div>
-              {campaign.button && (
-                <Button className="w-full mt-4">{campaign.button}</Button>
-              )}
-              {campaign.extraText && (
-                <p className="text-sm text-gray-600 mt-2">{campaign.extraText}</p>
-              )}
-            </CardContent>
-          </Card>
+    <div className="mx-auto px-4 md:px-12 py-12 md:py-24">
+      <h1 className="text-4xl font-bold text-center mb-8 text-purple-900">
+        Explore our top collections
+      </h1>
+
+      <nav className="flex justify-between mb-8 overflow-x-auto">
+        {categories.map(({ icon: Icon, text }) => (
+          <div
+            key={text}
+            className={`flex flex-col items-center mx-2 min-w-max cursor-pointer ${
+              activeCategory === text ? "text-purple-600" : ""
+            }`}
+            onClick={() => setActiveCategory(text)}
+          >
+            <Icon className="mb-2" />
+            <span className="text-xs font-semibold">{text}</span>
+            {activeCategory === text && (
+              <div className="h-0.5 w-full bg-purple-600 mt-2"></div>
+            )}
+          </div>
+        ))}
+      </nav>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {products.map((product, index) => (
+          <ProductCard key={index} {...product} />
         ))}
       </div>
-      <div className="text-center mt-8">
-        <Button variant="outline" size="lg">VIEW ENTIRE COLLECTION</Button>
+    </div>
+  );
+}
+
+function ProductCard({
+  image,
+  title,
+  description,
+  price,
+  originalPrice,
+  discount,
+  raised,
+  funded,
+  badge,
+  trustBadge,
+  large,
+  dark,
+}) {
+  const [isHovered, setIsHovered] = useState(false);
+
+  return (
+    <div
+      className={`relative overflow-hidden rounded-lg ${
+        large ? "col-span-full md:col-span-2" : ""
+      }`}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <div
+        className="relative w-full h-0"
+        style={{ paddingBottom: large ? "50%" : "75%" }}
+      >
+        <img
+          src={image}
+          alt={title}
+          layout="fill"
+          objectFit="cover"
+          className={`transition-transform duration-300 ${
+            isHovered ? "scale-110" : "scale-100"
+          }`}
+        />
+        <div
+          className={`absolute inset-0 p-4 flex flex-col justify-between bg-gradient-to-t from-black/70 to-transparent text-white ${
+            dark ? "bg-black/50" : ""
+          }`}
+        >
+          <div>
+            {badge && (
+              <span className="inline-block bg-white text-black text-xs font-bold px-2 py-1 rounded mb-2">
+                {badge}
+              </span>
+            )}
+            {trustBadge && (
+              <span className="inline-block bg-yellow-400 text-black text-xs font-bold px-2 py-1 rounded mb-2 ml-2">
+                <Star className="w-4 h-4 inline mr-1" fill="currentColor" />{" "}
+                TRUST PROVEN
+              </span>
+            )}
+            <h3 className="font-bold mb-2 text-lg">{title}</h3>
+            <p className="text-sm mb-2 line-clamp-2">{description}</p>
+          </div>
+          <div>
+            {price && (
+              <div className="flex items-baseline mb-2">
+                <span className="text-2xl font-bold">${price}</span>
+                {originalPrice && (
+                  <>
+                    <span className="ml-2 text-sm line-through text-gray-300">
+                      ${originalPrice} USD
+                    </span>
+                    <span className="ml-2 text-sm text-green-400">
+                      ({discount}% OFF)
+                    </span>
+                  </>
+                )}
+              </div>
+            )}
+            {raised && funded && (
+              <div className="text-sm text-gray-300">
+                <span>${raised.toLocaleString()} raised</span>
+                <span className="mx-2">•</span>
+                <span>{funded}% funded</span>
+              </div>
+            )}
+            {isHovered && (
+              <Button variant="secondary">
+VIEW CAMPAIGN              </Button>
+            )}
+          </div>
+        </div>
       </div>
     </div>
-  )
+  );
 }

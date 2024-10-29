@@ -54,7 +54,7 @@ const Navbar = () => {
           {/* Buttons */}
           <div className="hidden sm:flex sm:items-center gap-2">
             <Button variant="outline">Log In</Button>
-            <Button variant="default">Get Started</Button>
+            <Button variant="default">Start a Campaign</Button>
           </div>
 
           {/* Mobile menu button */}
@@ -99,7 +99,7 @@ const Navbar = () => {
           <div className="pt-4 pb-3 border-t border-gray-200">
             <div>
               <Button variant="outline" className="mx-2">Log In</Button>
-              <Button>Get Started</Button>
+              <Button>Start a Campaign</Button>
             </div>
           </div>
         </div>
