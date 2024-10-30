@@ -2,24 +2,24 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 
 const faqs = [
   {
-    question: 'What is your product?',
-    answer: 'Our product is a comprehensive platform designed to help creators publish and monetize their content easily.',
+    question: 'What is Research Connect?',
+    answer: 'Research Connect is a marketplace designed for researchers, innovators, and industry professionals to showcase their products, receive feedback, and connect with collaborators or potential investors.',
   },
   {
-    question: 'How much does it cost?',
-    answer: 'We offer various pricing tiers to suit different needs. Our basic plan starts at $9.99/month, with more advanced features available in our premium plans.',
+    question: 'Who can use the Research Connect platform?',
+    answer: 'The platform is open to researchers/innovators, reviewers/experts, and collaborators/investors. Each user type can engage differently to foster collaboration and innovation.',
   },
   {
-    question: 'Is there a free trial?',
-    answer: 'Yes, we offer a 14-day free trial for all new users. This allows you to explore all our features and decide if our platform is right for you.',
+    question: 'How do I sign up as a researcher?',
+    answer: 'You can register by visiting the Research Connect website and filling out the registration form. After verification, you can create your profile and start showcasing your projects.',
   },
   {
-    question: 'How do I get started?',
-    answer: 'Getting started is easy! Simply click the "Sign Up" button, create an account, and you can begin using our platform immediately.',
+    question: 'What type of projects can I showcase',
+    answer: 'You can showcase any research product, solution, or innovation that you are developing. This includes technical specifications, images, videos, and relevant documentation.',
   },
   {
-    question: 'What kind of support do you offer?',
-    answer: 'We provide 24/7 customer support via email and live chat. Our team of experts is always ready to assist you with any questions or issues you may have.',
+    question: 'How do I find projects to invest in or collaborate with?',
+    answer: 'As a collaborator or investor, you can register on the platform, specify your interests, and browse through projects that match your criteria.',
   },
 ]
 

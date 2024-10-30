@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/button'
+import { Button } from "@/components/ui/button";
 
 export function Banner() {
   return (
@@ -6,12 +6,16 @@ export function Banner() {
       <div className=" px-4 md:px-12">
         <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 items-center">
           <div className="space-y-4">
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Join Our Community</h2>
+            <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
+              Join Our Community
+            </h2>
             <p className="max-w-[600px] md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-              Be part of a growing network of creators, innovators, and thought leaders. Share your ideas, learn from
-              others, and grow together.
+              Become a part of the Research Connect community today! Whether
+              you&apos;re a researcher looking to showcase your innovative products,
+              an expert eager to provide feedback, or a collaborator seeking the
+              next big idea, our platform is designed for you.
             </p>
-            <Button variant="secondary" size="lg">
+            <Button variant="outline" size="lg">
               Get Started Now
             </Button>
           </div>
@@ -25,5 +29,5 @@ export function Banner() {
         </div>
       </div>
     </section>
-  )
+  );
 }

@@ -1,4 +1,5 @@
-import { Facebook, Twitter, Instagram, Linkedin } from 'lucide-react'
+import { Facebook, Twitter, Instagram, Linkedin } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export function Footer() {
   return (
@@ -8,34 +9,73 @@ export function Footer() {
           <div className="space-y-4">
             <h3 className="text-lg font-semibold">About Us</h3>
             <p className="text-sm text-muted-foreground">
-              We are dedicated to providing the best platform for creators and innovators to share their ideas with the world.
+              Research Connect is a dedicated marketplace designed to empower
+              researchers, innovators, and industry professionals in their
+              journey from product development to market access.
             </p>
           </div>
           <div className="space-y-4">
             <h3 className="text-lg font-semibold">Quick Links</h3>
             <ul className="space-y-2 text-sm">
-              <li><a href="#" className="text-muted-foreground hover:text-primary">Home</a></li>
-              <li><a href="#" className="text-muted-foreground hover:text-primary">Products</a></li>
-              <li><a href="#" className="text-muted-foreground hover:text-primary">About</a></li>
-              <li><a href="#" className="text-muted-foreground hover:text-primary">Contact</a></li>
+              <li>
+                <Link
+                  to="/"
+                  className="text-muted-foreground hover:text-primary"
+                >
+                  Home
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/explore"
+                  className="text-muted-foreground hover:text-primary"
+                >
+                  Explore
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/publish"
+                  className="text-muted-foreground hover:text-primary"
+                >
+                  Publish
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/discovery"
+                  className="text-muted-foreground hover:text-primary"
+                >
+                  Discovery
+                </Link>
+              </li>
             </ul>
           </div>
           <div className="space-y-4">
             <h3 className="text-lg font-semibold">Contact Us</h3>
             <p className="text-sm text-muted-foreground">
-              123 Innovation Street<br />
-              Tech City, TC 12345<br />
-              contact@example.com<br />
-              (123) 456-7890
+              Abuja Nigeria Office <br />
+              10, Lord Lugard street, <br />
+              Asokoro Abuja,
+              <br />
+              Nigeria
             </p>
           </div>
           <div className="space-y-4">
             <h3 className="text-lg font-semibold">Follow Us</h3>
             <div className="flex space-x-4">
-              <a href="#" className="text-muted-foreground hover:text-primary"><Facebook className="w-6 h-6" /></a>
-              <a href="#" className="text-muted-foreground hover:text-primary"><Twitter className="w-6 h-6" /></a>
-              <a href="#" className="text-muted-foreground hover:text-primary"><Instagram className="w-6 h-6" /></a>
-              <a href="#" className="text-muted-foreground hover:text-primary"><Linkedin className="w-6 h-6" /></a>
+              <Link to="#" className="text-muted-foreground hover:text-primary">
+                <Facebook className="w-6 h-6" />
+              </Link>
+              <Link to="#" className="text-muted-foreground hover:text-primary">
+                <Twitter className="w-6 h-6" />
+              </Link>
+              <Link to="#" className="text-muted-foreground hover:text-primary">
+                <Instagram className="w-6 h-6" />
+              </Link>
+              <Link to="#" className="text-muted-foreground hover:text-primary">
+                <Linkedin className="w-6 h-6" />
+              </Link>
             </div>
           </div>
         </div>
@@ -44,5 +84,5 @@ export function Footer() {
         </div>
       </div>
     </footer>
-  )
+  );
 }

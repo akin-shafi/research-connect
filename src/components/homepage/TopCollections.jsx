@@ -86,23 +86,24 @@ export default function TopCollections() {
 
   return (
     <div className="mx-auto px-4 md:px-12 py-12 md:py-24">
-      <h1 className="text-4xl font-bold text-center mb-8 text-purple-900">
-        Explore our top collections
-      </h1>
+      <div className="flex flex-col items-center space-y-2 text-center mb-10">
+        <p className="uppercase text-primary font-semibold">collections</p>
+          <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Explore our Top Collections</h2>
+        </div>
 
       <nav className="flex justify-between mb-8 overflow-x-auto">
         {categories.map(({ icon: Icon, text }) => (
           <div
             key={text}
             className={`flex flex-col items-center mx-2 min-w-max cursor-pointer ${
-              activeCategory === text ? "text-purple-600" : ""
+              activeCategory === text ? "text-primary-200" : ""
             }`}
             onClick={() => setActiveCategory(text)}
           >
             <Icon className="mb-2" />
             <span className="text-xs font-semibold">{text}</span>
             {activeCategory === text && (
-              <div className="h-0.5 w-full bg-purple-600 mt-2"></div>
+              <div className="h-0.5 w-full bg-primary-200 mt-2"></div>
             )}
           </div>
         ))}
