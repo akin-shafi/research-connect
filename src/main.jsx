@@ -9,7 +9,7 @@ import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import Discovery from "./pages/Discovery";
 import Equipment from "./pages/Equipment";
-import Products from "./pages/Products";
+import Explore from "./pages/Explore";
 import Publications from "./pages/Publications";
 import ResearcherDashboard from "./pages/dashboards/ResearcherDashboard";
 import InnovatorDashboard from "./pages/dashboards/InnovatorDashboard";
@@ -27,7 +27,7 @@ const router = createBrowserRouter([
       { path: "/", element: <HomePage /> },
       { path: "/ideas", element: <Discovery /> },
       { path: "/equipment", element: <Equipment /> },
-      { path: "/products", element: <Products /> },
+      { path: "/explore", element: <Explore /> },
       { path: "/publications", element: <Publications /> },
       { path: "/login", element: <Login /> },
       { path: "/signup", element: <SignUp /> },

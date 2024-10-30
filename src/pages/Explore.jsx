@@ -30,7 +30,7 @@ import {
 import bgImage from "@/assets/images/bg.png";
 
 
-export default function Products() {
+export default function Explore() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedTiming, setSelectedTiming] = useState("all");
