@@ -13,12 +13,12 @@ const Navbar = () => {
   const [activeLink, setActiveLink] = useState("home");
 
   const navLinks = [
-    { name: "Home", href: "#", id: "home" },
+    { name: "Home", href: "/", id: "home" },
     { name: "Ideas", href: "/ideas", id: "ideas" },
-    { name: "Equipments", href: "#", id: "equipments" },
+    { name: "Equipments", href: "/equipment", id: "equipments" },
     { name: "Products", href: "/products", id: "products" },
-    { name: "Publications", href: "#", id: "publications" },
-    { name: "Research Unit", href: "#", id: "research-units" },
+    { name: "Publications", href: "/publications", id: "publications" },
+    { name: "Research Unit", href: "/", id: "research-units" },
   ];
 
   return (
@@ -37,7 +37,7 @@ const Navbar = () => {
             {navLinks.map((link) => (
               <Link
                 key={link.id}
-                href={link.href}
+                to={link.href}
                 className={`ml-8 text-[16px] font-medium text-gray-700 hover:text-primary-300 relative ${
                   activeLink === link.id ? "text-primary-300" : ""
                 }`}
@@ -53,8 +53,12 @@ const Navbar = () => {
 
           {/* Buttons */}
           <div className="hidden sm:flex sm:items-center gap-2">
-            <Button variant="outline">Log In</Button>
-            <Button variant="default">Start a Campaign</Button>
+            <Link to="/login">
+              <Button variant="outline">Log In</Button>
+            </Link>
+            <Link to="/products">
+              <Button>Start a Campaign</Button>
+            </Link>
           </div>
 
           {/* Mobile menu button */}
@@ -81,7 +85,7 @@ const Navbar = () => {
             {navLinks.map((link) => (
               <Link
                 key={link.id}
-                href={link.href}
+                to={link.href}
                 className={`block pl-3 pr-4 py-2 text-base font-medium ${
                   activeLink === link.id
                     ? "text-primary-300 bg-blue-50 border-l-4 border-primary-300 "
@@ -98,8 +102,14 @@ const Navbar = () => {
           </div>
           <div className="pt-4 pb-3 border-t border-gray-200">
             <div>
-              <Button variant="outline" className="mx-2">Log In</Button>
-              <Button>Start a Campaign</Button>
+              <Link to="/login">
+                <Button variant="outline" className="mx-2">
+                  Log In
+                </Button>
+              </Link>
+              <Link to="/products">
+                <Button>Start a Campaign</Button>
+              </Link>
             </div>
           </div>
         </div>

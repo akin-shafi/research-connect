@@ -121,6 +121,7 @@ export default function ProductSection() {
           <ProductCard key={index} {...product} />
         ))}
       </div>
+      <Button size="lg" variant="outline" className="mt-5">Explore all Campaigns</Button>
     </div>
     </section>
   )
