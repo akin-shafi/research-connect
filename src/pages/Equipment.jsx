@@ -1,12 +1,12 @@
-import { Search, ChevronDown, X, Bookmark, Filter } from "lucide-react";
-import { useState } from "react";
+import { Search, ChevronDown, X, Bookmark, Filter, Check } from "lucide-react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
   Card,
   CardContent,
   CardFooter,
-  CardHeader,
 } from "@/components/ui/card";
 import {
   Collapsible,
@@ -31,45 +31,56 @@ import bgImage from "@/assets/images/bg.png";
 
 export default function EquipmentExplore() {
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("all");
-  const [selectedFacility, setSelectedFacility] = useState("all");
-  const [sortOption, setSortOption] = useState("priceAsc"); // New state for sorting
+  const [selectedFilters, setSelectedFilters] = useState({
+    type: "all",
+    brand: "all",
+    category: "all",
+  });
+  const [sortOption, setSortOption] = useState("priceAsc");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [equipmentItems, setEquipmentItems] = useState([]);
+  const [filterOptions, setFilterOptions] = useState({});
 
-  const categories = [
-    { id: "research", label: "Research Equipment", count: 20 },
-    { id: "lab", label: "Laboratories", count: 15 },
-  ];
+  // Fetch equipment items and filter options
+  useEffect(() => {
+    axios
+      .get("https://research-connect-be.onrender.com/api/equipment")
+      .then((response) => {
+        setEquipmentItems(response.data);
+      })
+      .catch((error) => console.error("Error fetching equipment:", error));
 
-  const equipmentItems = [
-    {
-      name: "Spectrometer XT-3000",
-      description: "Advanced spectrometer for chemical analysis.",
-      category: "Research Equipment",
-      facility: "Lab A",
-      efficiency: "85%",
-      progress: 70,
-      price: 12000,
-      image: "https://via.placeholder.com/300x200",
-    },
-    {
-      name: "High-Speed Centrifuge",
-      description: "Essential for molecular biology labs.",
-      category: "Laboratories",
-      facility: "BioLab",
-      efficiency: "95%",
-      progress: 90,
-      price: 8500,
-      image: "https://via.placeholder.com/300x200",
-    },
-  ];
+    axios
+      .get("https://research-connect-be.onrender.com/api/taxonomy")
+      .then((response) => {
+        const organizedFilters = response.data.reduce((acc, item) => {
+          if (!acc[item.parameter]) acc[item.parameter] = [];
+          acc[item.parameter].push({ id: item.id, label: item.value });
+          return acc;
+        }, {});
+        setFilterOptions(organizedFilters);
+      })
+      .catch((error) => console.error("Error fetching filter options:", error));
+  }, []);
 
+  // Filter and sort equipment items based on selected options
   const filteredEquipment = equipmentItems
     .filter((item) => {
       if (
-        selectedCategory !== "all" &&
-        item.category !==
-          categories.find((c) => c.id === selectedCategory)?.label
+        selectedFilters.type !== "all" &&
+        item.type !== selectedFilters.type
+      ) {
+        return false;
+      }
+      if (
+        selectedFilters.brand !== "all" &&
+        item.brand !== selectedFilters.brand
+      ) {
+        return false;
+      }
+      if (
+        selectedFilters.category !== "all" &&
+        item.category !== selectedFilters.category
       ) {
         return false;
       }
@@ -81,78 +92,49 @@ export default function EquipmentExplore() {
     .sort((a, b) => {
       if (sortOption === "priceAsc") return a.price - b.price;
       if (sortOption === "priceDesc") return b.price - a.price;
-      if (sortOption === "efficiency")
-        return parseFloat(b.efficiency) - parseFloat(a.efficiency);
-      if (sortOption === "progress") return b.progress - a.progress;
       return 0;
     });
 
+  const handleFilterChange = (filterKey, value) => {
+    setSelectedFilters((prevFilters) => ({
+      ...prevFilters,
+      [filterKey]: value,
+    }));
+  };
+
   const FilterSidebar = () => (
     <div className="space-y-6">
-      <div>
-        <h3 className="text-sm font-semibold uppercase mb-3">CATEGORY</h3>
-        <div className="space-y-2">
-          <button
-            className={`w-full text-left ${
-              selectedCategory === "all" ? "text-primary" : ""
-            } font-medium`}
-            onClick={() => setSelectedCategory("all")}
-          >
-            All Categories
-          </button>
-          {categories.map((category) => (
-            <Collapsible key={category.id}>
-              <CollapsibleTrigger className="flex items-center justify-between w-full text-left hover:text-foreground">
-                <span
-                  className={
-                    selectedCategory === category.id ? "text-primary" : ""
-                  }
-                >
-                  {category.label}
-                </span>
-                <div className="flex items-center">
-                  <span className="text-sm text-muted-foreground mr-2">
-                    {category.count}
-                  </span>
-                  <ChevronDown className="h-4 w-4 text-muted-foreground" />
-                </div>
-              </CollapsibleTrigger>
-              <CollapsibleContent className="pl-4 py-2">
-                <div className="space-y-2">
-                  <button
-                    className="text-sm text-muted-foreground hover:text-foreground"
-                    onClick={() => setSelectedCategory(category.id)}
-                  >
-                    All {category.label}
-                  </button>
-                </div>
-              </CollapsibleContent>
-            </Collapsible>
-          ))}
-        </div>
-      </div>
-
-      <div>
-        <h3 className="text-sm font-semibold uppercase mb-3">FACILITY</h3>
-        <div className="space-y-2">
-          {["all", "Lab A", "BioLab"].map((facility) => (
-            <label
-              key={facility}
-              className="flex items-center gap-2 cursor-pointer"
-            >
-              <div
-                className={`h-4 w-4 rounded-full border ${
-                  selectedFacility === facility
-                    ? "border-4 border-primary"
-                    : "border-input"
+      {["Type", "Brand", "Category"].map((filterKey) => (
+        <div key={filterKey}>
+          <Collapsible>
+            <CollapsibleTrigger className="flex justify-between items-center font-semibold uppercase mb-2">
+              {filterKey}
+              <ChevronDown className="h-4 w-4" />
+            </CollapsibleTrigger>
+            <CollapsibleContent className="space-y-2 pl-4">
+              <button
+                onClick={() => handleFilterChange(filterKey.toLowerCase(), "all")}
+                className={`w-full text-left ${
+                  selectedFilters[filterKey.toLowerCase()] === "all" ? "text-primary font-medium" : ""
                 }`}
-                onClick={() => setSelectedFacility(facility)}
-              />
-              <span>{facility === "all" ? "All" : facility}</span>
-            </label>
-          ))}
+              >
+                All {filterKey}s
+              </button>
+              {filterOptions[filterKey]?.map((option) => (
+                <button
+                  key={option.id}
+                  onClick={() => handleFilterChange(filterKey.toLowerCase(), option.label)}
+                  className={`w-full text-left ${
+                    selectedFilters[filterKey.toLowerCase()] === option.label ? "text-primary font-medium" : ""
+                  }`}
+                >
+                  {option.label}
+                </button>
+              ))}
+            </CollapsibleContent>
+          </Collapsible>
         </div>
-      </div>
+      ))}
     </div>
   );
 
@@ -208,7 +190,7 @@ export default function EquipmentExplore() {
             <Select
               value={sortOption}
               onChange={(e) => setSortOption(e.target.value)}
-              defaultValue="trending"
+              defaultValue="priceAsc"
             >
               <SelectTrigger className="w-[140px]">
                 <SelectValue />
@@ -216,8 +198,6 @@ export default function EquipmentExplore() {
               <SelectContent>
                 <SelectItem value="priceAsc">Price: Low to High</SelectItem>
                 <SelectItem value="priceDesc">Price: High to Low</SelectItem>
-                <SelectItem value="efficiency">Efficiency</SelectItem>
-                <SelectItem value="progress">Progress Acquired</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -229,7 +209,7 @@ export default function EquipmentExplore() {
           </div>
 
           <div className="flex-1">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               {filteredEquipment.map((equipment, index) => (
                 <EquipmentCard key={index} {...equipment} />
               ))}
@@ -244,72 +224,58 @@ export default function EquipmentExplore() {
 function EquipmentCard({
   name,
   description,
-  category,
-  facility,
-  efficiency,
-  progress,
-  price,
+  taxonomy,
+  institutionName,
+  contactEmail,
+  availability,
+  verificationStatus,
   image,
+  location,
 }) {
-  const [isHovering, setIsHovering] = useState(false);
-
   return (
-    <Card
-      className="max-w-sm mx-auto"
-      onMouseEnter={() => setIsHovering(true)}
-      onMouseLeave={() => setIsHovering(false)}
-    >
-      <CardHeader className="relative p-0">
+    <Card className="overflow-hidden rounded-lg bg-white">
+      <div className="relative h-48 w-full md:h-60">
         <img
           src={image}
           alt={name}
-          className="w-full h-auto object-cover rounded-t-lg"
+          className="object-cover w-full h-full rounded-t-lg"
         />
-        <div
-          className={`absolute inset-0 bg-black bg-opacity-50 transition-opacity duration-300 flex items-center justify-center ${
-            isHovering ? "opacity-100" : "opacity-0"
-          }`}
-        >
-          <Button
-            variant="secondary"
-            className={`${isHovering ? "opacity-100" : "opacity-0"}`}
-          >
-            VIEW DETAILS
-          </Button>
-          <Button
-            size="icon"
-            variant="secondary"
-            className={`absolute top-2 right-2 ${
-              isHovering ? "opacity-100" : "opacity-0"
-            }`}
-          >
-            <Bookmark className="h-4 w-4" />
-          </Button>
+      </div>
+      <CardContent className="p-4 flex flex-col justify-between">
+        <div>
+          <div className="flex justify-between items-start mb-2">
+            <h2 className="text-lg font-semibold">{name}</h2>
+            <Bookmark className="h-5 w-5 text-muted-foreground cursor-pointer hover:text-primary" />
+          </div>
+          <p className="text-sm text-muted-foreground mb-2">{description}</p>
+          <div className="flex flex-wrap gap-2 mb-2">
+            <Badge variant="secondary">{taxonomy}</Badge>
+            <Badge variant="outline">{location}</Badge>
+          </div>
         </div>
-        <Badge className="absolute top-2 left-2 bg-background text-foreground">
-          {facility}
-        </Badge>
-      </CardHeader>
-      <CardContent className="p-4">
-        <h2 className="text-lg font-semibold mb-2">{name}</h2>
-        <p className="text-sm text-muted-foreground mb-2">{description}</p>
-        <p className="text-lg font-bold mb-4">${price}</p>
-        <div className="w-full bg-muted rounded-full h-2 mb-2">
-          <div
-            className="bg-primary h-2 rounded-full"
-            style={{ width: `${Math.min(progress, 100)}%` }}
-          ></div>
-        </div>
-        <div className="flex justify-between text-sm">
-          <span className="font-semibold">{efficiency} Efficient</span>
-          <span className="text-muted-foreground">{progress}% Acquired</span>
+        <div className="flex justify-between items-end mt-2">
+          <div>
+            <p className="text-sm font-medium">{institutionName}</p>
+            <p className="text-xs text-muted-foreground">{contactEmail}</p>
+          </div>
+          <div className="flex items-center gap-2">
+            {availability ? (
+              <Badge variant="success" className="flex items-center gap-1">
+                <Check className="h-3 w-3" /> Available
+              </Badge>
+            ) : (
+              <Badge variant="destructive" className="flex items-center gap-1">
+                <X className="h-3 w-3" /> Unavailable
+              </Badge>
+            )}
+            {verificationStatus && (
+              <Badge variant="secondary" className="flex items-center gap-1">
+                <Check className="h-3 w-3" /> Verified
+              </Badge>
+            )}
+          </div>
         </div>
       </CardContent>
-      <CardFooter className="p-4 pt-0">
-        <Badge variant="outline" className="w-full justify-center py-1">
-          {category}
-        </Badge>
-      </CardFooter>
     </Card>
   );
 }
