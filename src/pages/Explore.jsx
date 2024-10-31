@@ -1,171 +1,107 @@
-import { Search, ChevronDown, X, Bookmark, Filter } from "lucide-react";
-import { useState } from "react";
+import { Search, ChevronDown, X, Bookmark, Filter, Heart } from "lucide-react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-} from "@/components/ui/card";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import bgImage from "@/assets/images/bg.png";
 
-
 export default function Explore() {
+  const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState({});
+  const [filteredProducts, setFilteredProducts] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("all");
-  const [selectedTiming, setSelectedTiming] = useState("all");
+  const [selectedFilters, setSelectedFilters] = useState({});
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
-  const categories = [
-    { id: "tech", label: "Tech & Innovation", count: 42 },
-    { id: "creative", label: "Creative Works", count: 28 },
-    { id: "community", label: "Community Projects", count: 15 },
-  ];
+  // Fetch products and categories
+  useEffect(() => {
+    axios
+      .get("https://research-connect-be.onrender.com/api/products")
+      .then((response) => {
+        const formattedProducts = response.data.map(product => ({
+          title: product.title,
+          price: product.price,
+          category: product.categoryId === 1 ? "TECH" : "Other",
+          status: product.stockQuantity > 0 ? "IN STOCK" : "OUT OF STOCK",
+          image: product.image,
+          description: product.description,
+          likes: product.likes
+        }))
+        setProducts(formattedProducts)
+        setFilteredProducts(formattedProducts);
+      })
+      .catch((error) => console.error("Error fetching products:", error));
+  }, []);
 
-  const products = [
-    {
-      title: "RoboInfinity InsightDrive",
-      price: 299,
-      raised: 125000,
-      funded: 85,
-      category: "Tech & Innovation",
-      status: "GOGOPICK",
-      image: "https://via.placeholder.com/300x200",
-    },
-    {
-      title: "SWAY MIDI CONTROLLER",
-      price: 199,
-      raised: 75000,
-      funded: 150,
-      category: "Creative Works",
-      status: "TRENDING",
-      image: "https://via.placeholder.com/300x200",
-    },
-    {
-      title: "Community Music Studio",
-      price: 499,
-      raised: 250000,
-      funded: 65,
-      category: "Community Projects",
-      status: "NEW",
-      image: "https://via.placeholder.com/300x200",
-    },
-  ];
+  useEffect(() => {
+    axios
+      .get("https://research-connect-be.onrender.com/api/taxonomy")
+      .then((response) => {
+        // Organize categories by parameter
+        const categoryMap = response.data.reduce((acc, item) => {
+          if (!acc[item.parameter]) acc[item.parameter] = [];
+          acc[item.parameter].push({ id: item.id, label: item.value });
+          return acc;
+        }, {});
+        setCategories(categoryMap);
+      })
+      .catch((error) => console.error("Error fetching categories:", error));
+  }, []);
 
-  const filteredProducts = products.filter((product) => {
-    if (
-      selectedCategory !== "all" &&
-      product.category !==
-        categories.find((c) => c.id === selectedCategory)?.label
-    ) {
-      return false;
-    }
-    if (searchQuery) {
-      return product.title.toLowerCase().includes(searchQuery.toLowerCase());
-    }
-    return true;
-  });
+  // Filter products based on selected filters and search query
+  useEffect(() => {
+    const filtered = products.filter((product) => {
+      const matchesQuery = product.title.toLowerCase().includes(searchQuery.toLowerCase());
+
+      // Check if product matches all selected filters
+      const matchesFilters = Object.keys(selectedFilters).every((param) => {
+        const selectedValues = selectedFilters[param];
+        return !selectedValues.length || selectedValues.includes(product[param.toLowerCase()]);
+      });
+
+      return matchesQuery && matchesFilters;
+    });
+    setFilteredProducts(filtered);
+  }, [products, selectedFilters, searchQuery]);
+
+  // Update filters
+  const handleFilterChange = (parameter, value) => {
+    setSelectedFilters((prevFilters) => {
+      const currentValues = prevFilters[parameter] || [];
+      const newValues = currentValues.includes(value)
+        ? currentValues.filter((v) => v !== value)
+        : [...currentValues, value];
+      return { ...prevFilters, [parameter]: newValues };
+    });
+  };
 
   const FilterSidebar = () => (
-    <div className="space-y-6">
-      <div>
-        <h3 className="text-sm font-semibold uppercase mb-3">CATEGORY</h3>
-        <div className="space-y-2">
-          <button
-            className={`w-full text-left ${
-              selectedCategory === "all" ? "text-primary" : ""
-            } font-medium`}
-            onClick={() => setSelectedCategory("all")}
-          >
-            All Categories
-          </button>
-          {categories.map((category) => (
-            <Collapsible key={category.id}>
-              <CollapsibleTrigger className="flex items-center justify-between w-full text-left hover:text-foreground">
-                <span
-                  className={
-                    selectedCategory === category.id ? "text-primary" : ""
-                  }
-                >
-                  {category.label}
-                </span>
-                <div className="flex items-center">
-                  <span className="text-sm text-muted-foreground mr-2">
-                    {category.count}
-                  </span>
-                  <ChevronDown className="h-4 w-4 text-muted-foreground" />
-                </div>
-              </CollapsibleTrigger>
-              <CollapsibleContent className="pl-4 py-2">
-                <div className="space-y-2">
-                  <button
-                    className="text-sm text-muted-foreground hover:text-foreground"
-                    onClick={() => setSelectedCategory(category.id)}
-                  >
-                    All {category.label}
-                  </button>
-                  <button className="text-sm text-muted-foreground hover:text-foreground">
-                    Popular in {category.label}
-                  </button>
-                  <button className="text-sm text-muted-foreground hover:text-foreground">
-                    New in {category.label}
-                  </button>
-                </div>
-              </CollapsibleContent>
-            </Collapsible>
-          ))}
-        </div>
-      </div>
-
-      <div>
-        <h3 className="text-sm font-semibold uppercase mb-3">
-          CAMPAIGN TIMING
-        </h3>
-        <div className="space-y-2">
-          {["all", "launching", "ending"].map((timing) => (
-            <label
-              key={timing}
-              className="flex items-center gap-2 cursor-pointer"
-            >
-              <div
-                className={`h-4 w-4 rounded-full border ${
-                  selectedTiming === timing
-                    ? "border-4 border-primary"
-                    : "border-input"
+    <div className="space-y-4">
+      {Object.keys(categories).map((parameter) => (
+        <Collapsible key={parameter}>
+          <CollapsibleTrigger className="flex justify-between items-center font-semibold uppercase mb-2">
+            {parameter}
+            <ChevronDown className="h-4 w-4" />
+          </CollapsibleTrigger>
+          <CollapsibleContent className="space-y-2 pl-4">
+            {categories[parameter].map((item) => (
+              <button
+                key={item.id}
+                onClick={() => handleFilterChange(parameter, item.label)}
+                className={`w-full text-left ${
+                  selectedFilters[parameter]?.includes(item.label) ? "text-primary font-medium" : ""
                 }`}
-                onClick={() => setSelectedTiming(timing)}
-              />
-              <span>
-                {timing === "all"
-                  ? "All"
-                  : timing === "launching"
-                  ? "Launching soon"
-                  : "Ending soon"}
-              </span>
-            </label>
-          ))}
-        </div>
-      </div>
+              >
+                {item.label}
+              </button>
+            ))}
+          </CollapsibleContent>
+        </Collapsible>
+      ))}
     </div>
   );
 
@@ -184,7 +120,6 @@ export default function Explore() {
 
       {/* Main Content */}
       <div className="mx-auto px-4 py-8 md:px-12">
-        {/* Search and Filter */}
         <div className="flex flex-col md:flex-row gap-4 mb-6">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground h-4 w-4" />
@@ -195,6 +130,7 @@ export default function Explore() {
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-10 pr-10 py-2 border rounded-lg"
             />
+            
             {searchQuery && (
               <button
                 onClick={() => setSearchQuery("")}
@@ -204,22 +140,22 @@ export default function Explore() {
               </button>
             )}
           </div>
-          <div className="flex items-center gap-2">
-            <Sheet open={isFilterOpen} onOpenChange={setIsFilterOpen}>
-              <SheetTrigger asChild>
-                <Button variant="outline" className="md:hidden">
-                  <Filter className="h-4 w-4 mr-2" />
-                  Filters
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="left">
-                <SheetHeader>
-                  <SheetTitle>Filters</SheetTitle>
-                </SheetHeader>
-                <FilterSidebar />
-              </SheetContent>
-            </Sheet>
-            <Select defaultValue="trending">
+          <div className="flex gap-2">
+          <Sheet open={isFilterOpen} onOpenChange={setIsFilterOpen}>
+            <SheetTrigger asChild>
+              <Button variant="outline" className="md:hidden">
+                <Filter className="h-4 w-4 mr-2" />
+                Filters
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="left">
+              <SheetHeader>
+                <SheetTitle>Filters</SheetTitle>
+              </SheetHeader>
+              <FilterSidebar />
+            </SheetContent>
+          </Sheet>
+          <Select defaultValue="trending">
               <SelectTrigger className="w-[140px]">
                 <SelectValue />
               </SelectTrigger>
@@ -229,16 +165,15 @@ export default function Explore() {
                 <SelectItem value="funded">Most Funded</SelectItem>
               </SelectContent>
             </Select>
-          </div>
+              
+            </div>
+          
         </div>
 
         <div className="flex gap-8">
-          {/* Sidebar */}
           <div className="hidden md:block w-64 flex-shrink-0">
             <FilterSidebar />
           </div>
-
-          {/* Product Grid */}
           <div className="flex-1">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredProducts.map((product, index) => (
@@ -252,20 +187,13 @@ export default function Explore() {
   );
 }
 
-function ProductCard({
-  title,
-  price,
-  raised,
-  funded,
-  category,
-  status,
-  image,
-}) {
-  const [isHovering, setIsHovering] = useState(false);
+// eslint-disable-next-line react/prop-types
+function ProductCard({ title, price, category, status, image, description, likes }) {
+  const [isHovering, setIsHovering] = useState(false)
 
   return (
-    <Card
-      className="max-w-sm mx-auto"
+    <Card 
+      className="max-w-sm mx-auto flex flex-col h-full"
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
     >
@@ -274,58 +202,46 @@ function ProductCard({
           <img
             src={image}
             alt={title}
-            className="w-full h-auto object-cover rounded-t-lg"
+            className="w-full h-48 object-cover rounded-t-lg"
           />
-          <div
+          <div 
             className={`absolute inset-0 bg-black bg-opacity-50 transition-opacity duration-300 flex items-center justify-center ${
-              isHovering ? "opacity-100" : "opacity-0"
+              isHovering ? 'opacity-100' : 'opacity-0'
             }`}
           >
-            <Button
-              variant="secondary"
+            <Button 
+              variant="secondary" 
               className={`transition-opacity duration-300 ${
-                isHovering ? "opacity-100" : "opacity-0"
+                isHovering ? 'opacity-100' : 'opacity-0'
               }`}
             >
-              VIEW CAMPAIGN
+              VIEW DETAILS
             </Button>
-            <Button
-              size="icon"
-              variant="secondary"
-              className={`absolute top-2 right-2 transition-opacity duration-300 ${
-                isHovering ? "opacity-100" : "opacity-0"
-              }`}
-            >
+            <Button size="icon" variant="secondary" className={`absolute top-2 right-2 transition-opacity duration-300 ${
+                isHovering ? 'opacity-100' : 'opacity-0'
+              }`}>
               <Bookmark className="h-4 w-4" />
             </Button>
           </div>
         </div>
-        <Badge className="absolute top-2 left-2 bg-background text-foreground">
-          {status}
-        </Badge>
+        <Badge className="absolute top-2 left-2 bg-background text-foreground">{status}</Badge>
       </CardHeader>
-      <CardContent className="p-4">
-        <h2 className="text-lg font-semibold mb-2">{title}</h2>
-        <p className="text-sm text-muted-foreground mb-2">STARTING AT</p>
-        <p className="text-3xl font-bold mb-4">${price}</p>
-        <div className="w-full bg-muted rounded-full h-2 mb-2">
-          <div
-            className="bg-primary h-2 rounded-full"
-            style={{ width: `${Math.min(funded, 100)}%` }}
-          ></div>
-        </div>
-        <div className="flex justify-between text-sm">
-          <span className="font-semibold">
-            ${raised.toLocaleString()} raised
-          </span>
-          <span className="text-muted-foreground">{funded}% funded</span>
+      <CardContent className="p-4 flex flex-col justify-between flex-grow">
+        <div>
+          <h2 className="text-lg font-semibold mb-2">{title}</h2>
+          <p className="text-sm text-muted-foreground mb-2">{description}</p>
+          <p className="text-3xl font-bold mb-4">${price}</p>
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <Heart className="h-4 w-4 text-red-500" />
+            <span>{likes} Likes</span>
+          </div>
         </div>
       </CardContent>
-      <CardFooter className="p-4 pt-0">
+      <CardFooter className="p-4 pt-0 mt-auto">
         <Badge variant="outline" className="w-full justify-center py-1">
           {category}
         </Badge>
       </CardFooter>
     </Card>
-  );
+  )
 }
